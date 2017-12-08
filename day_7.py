@@ -1187,13 +1187,14 @@ ugml (68) -> gyxo, ebii, jptl
 gyxo (61)
 cntj (57)"""
 
-"""
+
 splitted = []
 
 for i in data.split('\n'):
     string = re.findall(r'[a-z]+', i)
     splitted.append(string)
 
+"""
 start_len = len(splitted)
 
 while start_len > 2:
@@ -1219,7 +1220,33 @@ for i in data.split('\n'):
     #weights[re.findall(r'^[a-z]+', i)] = weights[re.findall(r'[0-9]+', i)]
     weights[node[0]] = int(weight[0])
 
-print(weights)
+#print(weights)
+
+import sys
+import copy
+#sys.setrecursionlimit(10000)
+
+start_item = 'tknk'
 
 
+def summ(curr_list, item, last_pos):
+    i = 0
+    print(item)
+    for pos, i in enumerate(curr_list):
+        if i.count(item) != 0 and pos != last_pos:
+            break
+    last_pos = curr_list[pos].index(item)
+    next_item_index = last_pos + 1
+    if next_item_index in range(0, len(curr_list[pos])):
+        next_item = curr_list[pos][next_item_index]
+        next_list = copy.deepcopy(curr_list)
+        next_list[pos].remove(item)
+        while summ(next_list, next_item, pos):
+            pass
+    else:
+        return 1
 
+#print(next_item)
+
+
+summ(splitted, start_item, 0)
